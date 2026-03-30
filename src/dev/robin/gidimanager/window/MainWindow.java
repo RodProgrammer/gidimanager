@@ -1,6 +1,10 @@
 package dev.robin.gidimanager.window;
 
+import dev.robin.gidimanager.table.ButtonEditor;
+import dev.robin.gidimanager.table.ButtonRenderer;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class MainWindow extends JFrame {
@@ -41,17 +45,24 @@ public class MainWindow extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1, 1));
 
-        String[][] data = {
-                {"0", "erst", "tf", "dwd"}
-        };
-
-        JScrollPane scrollPane = new JScrollPane(new JTable(data, new String[]{"ID", "Name", "Amount", "Image"}));
+        JScrollPane scrollPane = new JScrollPane(setupTable());
         panel.add(scrollPane);
         add(panel);
     }
 
-    private void setupTable() {
+    private JTable setupTable() {
+        Object[][] data = {
+                {"0", "erst", "tf", "dwd", "details"}
+        };
 
+        String[] columnNames = {"ID", "Name", "Amount", "Image", "Details"};
+
+        JTable jtable = new JTable(new DefaultTableModel(data, columnNames));
+
+        jtable.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer());
+        jtable.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(new JCheckBox()));
+
+        return jtable;
     }
 
 }
